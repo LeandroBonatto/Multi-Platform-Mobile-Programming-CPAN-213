@@ -1,0 +1,8 @@
+const AppIcon = () => {
+  return (
+    <Image
+      source={require('./assets/icon/icon8-app-64.png')}
+      style={{ width: 150, height: 150 }}
+    />
+  );
+};
