@@ -1,0 +1,114 @@
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
+
+export default function App() {
+  const [animation] = useState(new Animated.Value(0));
+
+  const handleButtonPress1 = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleButtonPress2 = () => {
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleButtonPress3 = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleButtonPress4 = () => {
+    Animated.parallel([
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animation, {
+        toValue: 0,
+        duration: 500,
+        delay: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const interpolateColor = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#4A4E69', '#99D1CE'],
+  });
+
+  const animatedStyle = {
+    backgroundColor: interpolateColor,
+    opacity: animation,
+    transform: [
+      {
+        rotate: animation.interpolate({
+          inputRange: [0, 1],
+          outputRange: ['0deg', '360deg'],
+        }),
+      },
+    ],
+  };
+
+  return (
+    <View style={styles.container}>
+      <Animated.View style={[styles.customShape, animatedStyle]} />
+
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress1}>
+        <Text style={styles.buttonText}>Animation 1</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress2}>
+        <Text style={styles.buttonText}>Animation 2</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress3}>
+        <Text style={styles.buttonText}>Animation 3</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleButtonPress4}>
+        <Text style={styles.buttonText}>Animation 4</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#22223B',
+  },
+  customShape: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: '#4A4E69',
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#9A8C98',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+});
+
